@@ -2,20 +2,19 @@
 from django.shortcuts import render
 
 
-posts = [
-    {
-        'id': 0,
-        'location': 'Остров отчаянья',
-        'date': '30 сентября 1659 года',
-        'category': 'travel',
-        'text': '''Наш корабль, застигнутый в открытом море
+posts = {0: {
+    'id': 0,
+    'location': 'Остров отчаянья',
+    'date': '30 сентября 1659 года',
+    'category': 'travel',
+    'text': '''Наш корабль, застигнутый в открытом море
                 страшным штормом, потерпел крушение.
                 Весь экипаж, кроме меня, утонул; я же,
                 несчастный Робинзон Крузо, был выброшен
                 полумёртвым на берег этого проклятого острова,
                 который назвал островом Отчаяния.''',
-    },
-    {
+},
+    1: {
         'id': 1,
         'location': 'Остров отчаянья',
         'date': '1 октября 1659 года',
@@ -30,8 +29,8 @@ posts = [
                 непременно спаслись бы. Теперь из его обломков мы могли бы
                 построить баркас, на котором и выбрались бы из этого
                 гиблого места.''',
-    },
-    {
+},
+    2: {
         'id': 2,
         'location': 'Остров отчаянья',
         'date': '25 октября 1659 года',
@@ -42,29 +41,22 @@ posts = [
                 жалкие обломки,  да и те видны только во время отлива.
                 Весь этот день я хлопотал  около вещей: укрывал и
                 укутывал их, чтобы не испортились от дождя.''',
-    },
-]
+},
+}
 
 
 def index(request):
-    template = 'blog/index.html'
-    revers_posts = list(reversed(posts))
-    context = {'post_list': revers_posts}
-    return render(request, template, context)
+    revers_posts = list(reversed(posts.values()))
+    return render(request, 'blog/index.html', {'post_list': revers_posts})
 
 
 def post_detail(request, id):
-    template = 'blog/detail.html'
-    context = {'post': posts[id]}
-    return render(request, template, context)
+    return render(request, 'blog/detail.html', {'post': posts[id]})
 
 
 def category_posts(request, category):
-    template = 'blog/category.html'
-    category_dicts = []
-    for post in posts:
-        if post['category'] == category:
-            category_dicts.append(post)
-    context = {'post_list': category_dicts,
-               'category': category, }
-    return render(request, template, context)
+
+    category_dicts = [
+        post for post in posts.values() if post['category'] == category]
+    return render(request, 'blog/category.html', {'post_list': category_dicts,
+                                                  'category': category, })
