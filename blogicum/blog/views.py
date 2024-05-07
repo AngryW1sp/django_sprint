@@ -2,19 +2,20 @@
 from django.shortcuts import render
 
 
-posts = {0: {
-    'id': 0,
-    'location': 'Остров отчаянья',
-    'date': '30 сентября 1659 года',
-    'category': 'travel',
-    'text': '''Наш корабль, застигнутый в открытом море
+posts = [
+    {
+        'id': 0,
+        'location': 'Остров отчаянья',
+        'date': '30 сентября 1659 года',
+        'category': 'travel',
+        'text': '''Наш корабль, застигнутый в открытом море
                 страшным штормом, потерпел крушение.
                 Весь экипаж, кроме меня, утонул; я же,
                 несчастный Робинзон Крузо, был выброшен
                 полумёртвым на берег этого проклятого острова,
                 который назвал островом Отчаяния.''',
-},
-    1: {
+    },
+    {
         'id': 1,
         'location': 'Остров отчаянья',
         'date': '1 октября 1659 года',
@@ -29,8 +30,8 @@ posts = {0: {
                 непременно спаслись бы. Теперь из его обломков мы могли бы
                 построить баркас, на котором и выбрались бы из этого
                 гиблого места.''',
-},
-    2: {
+    },
+    {
         'id': 2,
         'location': 'Остров отчаянья',
         'date': '25 октября 1659 года',
@@ -41,22 +42,24 @@ posts = {0: {
                 жалкие обломки,  да и те видны только во время отлива.
                 Весь этот день я хлопотал  около вещей: укрывал и
                 укутывал их, чтобы не испортились от дождя.''',
-},
-}
+    },
+]
+
+posts_dict = {post['id']: post for post in posts}
 
 
 def index(request):
-    revers_posts = list(reversed(posts.values()))
+    revers_posts = list(reversed(posts))
     return render(request, 'blog/index.html', {'post_list': revers_posts})
 
 
-def post_detail(request, id):
-    return render(request, 'blog/detail.html', {'post': posts[id]})
+def post_detail(request, post_id):
+    return render(request, 'blog/detail.html', {'post': posts_dict[post_id]})
 
 
 def category_posts(request, category):
 
     category_dicts = [
-        post for post in posts.values() if post['category'] == category]
+        post for post in posts_dict.values() if post['category'] == category]
     return render(request, 'blog/category.html', {'post_list': category_dicts,
                                                   'category': category, })
