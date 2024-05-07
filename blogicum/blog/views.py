@@ -57,9 +57,9 @@ def post_detail(request, post_id):
     return render(request, 'blog/detail.html', {'post': posts_dict[post_id]})
 
 
-def category_posts(request, category):
+def category_posts(request, category_id):
 
     category_dicts = [
-        post for post in posts_dict.values() if post['category'] == category]
+        post for post in posts if post['category'] == category_id]
     return render(request, 'blog/category.html', {'post_list': category_dicts,
-                                                  'category': category, })
+                                                  'category': category_id, })
